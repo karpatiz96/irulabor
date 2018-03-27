@@ -1,0 +1,434 @@
+linux labor
+
+1.1
+
+sudo netstat -npl
+
+or
+
+sudo netstat -tulpn
+
+1.2
+
+lsb_release -da
+
+or
+
+lsb_release -c //only codename
+
+1.3
+
+dpkg -l
+
+//Midnight Commander is package mc
+
+or 
+
+dpkg --get-selections | grep -v deinstall // not this
+
+1.4
+
+sudo iptables -L //rules INPUT
+
+sudo iptables -A INPUT -p tcp --dport 22 -s 192.168.0.0/24 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -s 127.0.0.0/8 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 22 -j DROP //REJECT active rejection instead of black hole
+
+1.5
+
+sudo iptables -A INPUT -p icmp -j DROP
+
+or
+
+sudo iptables -A INPUT -p icmp --icmp-type echo-request -j DROP
+
+//ping 127.0.0.1
+//sudo iptables -L --line-numbers
+//sudo iptables -D INPUT 3
+
+1.6
+
+cat /etc/passwd
+
+adduser mekkelek
+dd3dvd
+
+cat /etc/passwd
+
+//passwd mekkelek change password
+
+1.7
+
+https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file-on-ubuntu-and-centos
+
+su
+
+visudo
+
+sudo adduser mekkelek sudo
+
+sudo adduser mekkelek admin
+
+mekkelek ALL=(ALL:ALL) ALL
+
+echo 'mekkelek ALL=(ALL) ALL' >> /etc/sudoers
+
+1.8
+
+https://mediatemple.net/community/products/dv/204643810/how-do-i-disable-ssh-login-for-the-root-user#dv
+
+su
+
+mc
+
+/etc/ssh/sshd_config
+
+PermitRootLogin yes -> PermitRootLogin no
+
+/etc/init.d/ssh restart
+
+1.9
+
+1.10
+
+https://linode.com/docs/databases/mysql/how-to-install-mysql-on-debian-7/
+
+sudo apt-get update
+
+sudo apt-get install mysql-server
+
+sudo mysql_secure_installation
+
+sudo mysql -u root
+
+mysql --version
+
+dpkg -l 'mysql-server*'
+
+SHOW VARIABLES LIKE "%version%";
+
+SHOW VARIABLES LIKE "%version%";
+
+1.11
+
+/etc/mysql
+
+3306
+
+/var/lib/mysql
+
+/etc/mysql/my.cnf
+
+1.12
+
+netstat -tlpn | grep mysql
+
+1.13
+
+sudo mysql -u root -p, SHOW DATABASES;
+
+1.14
+
+mysql -u [username] -p [database_name] < [dumpfilename.sql]
+
+sudo mysql -u root -p
+
+use database_name;
+source /root/students.sql;
+
+1.15
+
+SHOW DATABASES;, DESCRIBE students.students;
+
+1.16
+
+INSERT INTO table (a, b, c) VALUES (1,2,3)
+
+Mekk Elek dd3dvd 1974.04.1
+
+2.1
+
+sudo apt-get update
+
+sudo apt-cache search apache2
+
+sudo apt-get install apache2
+
+2.2
+
+/etc/apache2/ports.conf
+
+cat /etc/apache2/ports.conf
+
+2.3
+
+sudo cp -r /home/laboruser/Dokumentumok/iru-master /var/www
+sudo chown -R $USER:$USER /var/www/iru-master
+sudo chmod -R 755 /var/www
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/irulabor.conf
+sudo nano /etc/apache2/sites-available/irulabor.conf
+
+ServerName irulabor.vmware
+ServerAlias *.irulabor.vmware
+
+sudo a2ensite irulabor
+sudo /etc/init.d/apache2 restart
+
+sudo nano /etc/hosts
+127.0.0.1 irulabor.vmware
+
+2.4
+
+2.5
+
+sudo apt-get update
+sudo apt-get install apache2-utils
+
+sudo htpasswd -c /etc/apache2/.htpasswd laboruser ///etc/apache2/conf.d/.htpasswd ha lehet
+sudo htpasswd /etc/apache2/.htpasswd root
+sudo htpasswd /etc/apache2/.htpasswd mekkelek
+
+sudo nano /etc/apache2/sites-available/irulabor.conf
+
+<Directory /var/www/irulabor/vedett> //"/var/www/irulabor/vedett" kell-het 
+	//Order allow,deny  //deny,allow
+	//Allow from all	//Require all denied Require host localhost Require ip 127.0.0.1
+	AuthType Basic
+	AuthName "Vedett oldal"
+	AuthUserFile /etc/apache2/.htpasswd
+	Require valid-user
+</Directory>
+
+sudo /etc/init.d/apache2 restart
+
+htpasswd -D .htpasswd ujfelhasznalo // delete user
+
+2.6
+
+2.7
+
+
+
+2.8
+
+sudo nano /etc/apache2/apache2.conf
+
+<Directory /var/www/irulabor/nyilvanos>
+	AllowOverride All
+</Directory>
+
+sudo /etc/init.d/apache2 restart
+
+2.9
+
+sudo nano /var/www/irulabor/nyilvanos/.htaccess
+
+Options +Indexes
+
+sudo /etc/init.d/apache2 restart
+
+3.1 A B
+
+mkdir /home/laboruser/bin
+
+touch /home/laboruser/bin/3_1.sh
+
+nano /home/laboruser/bin/3_1.sh
+
+#!/bin/bash
+lscpu | grep "Vendor ID" | awk '{print $3}'
+
+//"Vendor ID" A
+
+sudo chmod -R 755 /home/laboruser/bin/3_1.sh
+
+sudo chmod +x /home/laboruser/bin/3_1.sh
+
+cd bin
+
+./3_1.sh
+
+3.1 C D
+
+mkdir /home/laboruser/bin
+
+touch /home/laboruser/bin/3_1.sh
+
+nano /home/laboruser/bin/3_1.sh
+
+#!/bin/bash
+lscpu | grep "CPU MHz" | awk '{print $3}'
+
+//"Vendor ID" A
+
+sudo chmod -R 755 /home/laboruser/bin/3_1.sh
+
+sudo chmod +x /home/laboruser/bin/3_1.sh
+
+cd bin
+
+./3_1.sh
+
+3.2
+
+touch 3_2.sh
+
+nano 3_2.sh
+
+touch file_3_2
+
+nano file_3_2
+
+sudo chmod -R 755 file_3_2
+
+#!/bin/bash
+grep -c "^$"
+
+sudo chmod +x 3_2.sh
+
+cat file_3_2 | ./3_2.sh
+
+3.3 A C
+
+touch 3_3.sh
+
+nano 3_3.sh
+
+#!/bin/bash
+awk -v var=$1 '{if ($1%var==0) print $1,$5,$3,$4,$2}'
+
+touch input.txt
+
+nano input.txt
+
+sudo chmod +x 3_3.sh
+
+cat input.txt | ./3_3.sh 2
+
+cat input.txt | ./3_3.sh 3
+
+3.3 B D
+
+touch 3_3.sh
+
+nano 3_3.sh
+
+#!/bin/bash
+awk -v var=$1 '{if ($1%var==0) print $1,$2,$3,$4 $5}'
+
+touch input.txt
+
+nano input.txt
+
+sudo chmod +x 3_3.sh
+
+cat input.txt | ./3_3.sh 2
+
+cat input.txt | ./3_3.sh 3
+
+3.4
+
+touch 3_4.sh
+
+nano 3_4.sh
+
+#!/bin/bash
+echo "$USER"
+date +"%Y. %m. %d."
+who -u
+echo $$ //$BASHPID 
+
+sudo chmod +x 3_4.sh
+
+./3_4.sh
+
+3.6
+
+touch file_3_6_1.txt
+
+nano file_3_6_1.txt
+
+touch file_3_6_2.txt
+
+nano file_3_6_2.txt
+
+touch 3_6.sh
+
+nano 3_6.sh
+
+#!/bin/bash
+diff $1 $2 | grep "^<" | wc -l
+diff $1 $2 | grep "^>" | wc -l
+
+sudo chmod +x 3_6.sh
+
+cat file_3_6_1.txt file_3_6_2.txt | ./3_6.sh
+
+3.7 A
+
+touch file_3_7
+
+nano file_3_7
+
+touch 3_7.sh
+
+nano 3_7.sh
+
+#!/bin/bash
+awk -F "," '{if ($1 in a) {a[$1]+=($2 * $3)} else {a[$1]=($2 * $3)}} END{for(item in a){print item": "a[item]}}'
+
+sudo chmod +x 3_7.sh
+
+cat file_3_7 | ./3_7.sh
+
+3.7 B
+
+touch file_3_7
+
+nano file_3_7
+
+touch 3_7.sh
+
+nano 3_7.sh
+
+#!/bin/bash
+awk -F "," '{if ($1 in a) {if(a[$1] > $3){a[$1]=$3}else{}} else {a[$1]=$3}} END{for(item in a){print item": "a[item]}}'
+
+sudo chmod +x 3_7.sh
+
+cat file_3_7 | ./3_7.sh
+
+3.7 C
+
+touch file_3_7
+
+nano file_3_7
+
+touch 3_7.sh
+
+nano 3_7.sh
+
+#!/bin/bash
+awk -F "," '{if ($1 in a) {} else {print $1": " $2", "$3; a[$1]=1;}}'
+
+sudo chmod +x 3_7.sh
+
+cat file_3_7 | ./3_7.sh
+
+3.7 D
+
+touch file_3_7
+
+nano file_3_7
+
+touch 3_7.sh
+
+nano 3_7.sh
+
+#!/bin/bash
+awk -F "," '{if ($1 in a) {a[$1]++;} else {a[$1]=1}} END{for(item in a){print item": "a[item]}}'
+
+sudo chmod +x 3_7.sh
+
+cat file_3_7 | ./3_7.sh
